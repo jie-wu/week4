@@ -32,6 +32,26 @@ int main(int argc, char *argv[]){
  if(files[1])fprintf(stderr,"writing to %s\n",files[1]);
  else fprintf(stderr,"writing to stdout\n");
  
+ char buffer[4];
+ char *line = malloc(sizeof(buffer)+1);
+ int lineSize = sizeof(buffer)+1;
+ line[0] = '\0';
+ while(fgets(buffer,sizeof(buffer),inputfp)){
+ 	while(strlen(buffer) + strlen(line) +1 < LineSize) {
+ 		line = realloc(line,lineSize*2);
+ 		lineSize = lineSize*2;
+ 	}
+ 	strcat(line,buffer);
+ 	if (buffer[strlen(buffer)-1] == '\n' || strlne(buffer) < sizeof(buffer)-1) {
+ 		fprint(outputfp, "%s\n", line);
+ 		 line[0] = '\0';
+ 	}
+ 	
+ }
+ if(line)free(line);
+
+
+
  char line[4096];
  if(files[0]){
 		inputfp=fopen(files[0],"r");
@@ -41,6 +61,19 @@ if(files[1]){
 	outputfp=fopen(files[1],"w");
 	if(!outputfp)exit(0);
 }
+char *pch;
+char delim[] = " \n";
+pch = strotok(line, delim);
+// kirk captain   1234\n
+ int nRecords = 0;
+ while(pch) {
+ 	if(nRecords %3 == 2) {
+ 		fprintf(outputfp,"serial number is %d\n",atoin(pch));
+ 	}
+ 	pch = strtok(0, delim);
+ 	nRecords++;
+ }
+ }
 while(fgets(line,sizeof(line),inputfp)){
 	//parse a line for name rank and serialnumber
 	char name[4096], rank[4096];
