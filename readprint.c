@@ -36,14 +36,23 @@ int main(int argc, char *argv[]){
  if(files[0]){
 		inputfp=fopen(files[0],"r");
 		if(!inputfp)exit(0);
+}
+if(files[1]){
+	outputfp=fopen(files[1],"w");
+	if(!outputfp)exit(0);
+}
+while(fgets(line,sizeof(line),inputfp)){
+	//parse a line for name rank and serialnumber
+	char name[4096], rank[4096];
+	int serialNumber;
+	if(sscanf(line,"%s %s %d", name, rank, &serialNumber) == 3) {
+		fprintf(outputfp,"name is %s\n", name);
+		fprintf(outputfp,"rank is %s\n", rank);
+		fprintf(outputfp,"Serial number is %d\n", serialNumber);
+		
 	}
-	if(files[1]){
-		outputfp=fopen(files[1],"w");
-		if(!outputfp)exit(0);
-	}
-	while(fgets(line,sizeof(line),inputfp)){
-		fprintf(outputfp,"%s",line);
-	}			
+//	fprintf(outputfp,"%s",line);
+}			
  if(inputfp!=stdin)fclose(inputfp);
  if(outputfp!=stdout)fclose(outputfp);
  return 0;
